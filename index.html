@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Coffee Shop</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Custom styles for falling coffee beans animation */
+        #bean-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none; /* Allows clicks to pass through */
+            overflow: hidden;
+            z-index: -1;
+        }
+        .bean {
+            position: absolute;
+            width: 10px; /* Adjust size as needed */
+            height: 10px;
+            background-color: #795548; /* Coffee bean color */
+            border-radius: 50%;
+            top: -10px; /* Start above the viewport */
+            animation: fall linear infinite;
+        }
+        @keyframes fall {
+            to {
+                transform: translateY(100vh); /* Fall to the bottom of the viewport */
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-100 font-poppins">
+    <div id="bean-container"></div> <header class="bg-white shadow-md sticky top-0 z-10">
+        <div class="container mx-auto px-4 py-6 flex justify-between items-center">
+            <a href="#" class="text-2xl font-semibold text-brown-600">Coffee Shop</a>
+            <nav class="hidden md:block">
+                <ul class="flex space-x-6">
+                    <li><a href="#home" class="hover:text-brown-600 transition duration-300">Home</a></li>
+                    <li><a href="#menu" class="hover:text-brown-600 transition duration-300">Menu</a></li>
+                    <li><a href="#blog" class="hover:text-brown-600 transition duration-300">Blog</a></li>
+                    <li><a href="#contact" class="hover:text-brown-600 transition duration-300">Contact</a></li>
+                </ul>
+            </nav>
+            <button id="hamburger-btn" class="md:hidden text-brown-600 focus:outline-none" aria-label="Toggle Navigation">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+                </svg>
+            </button>
+        </div>
+    </header>
+
+    <div id="mobile-menu" class="hidden fixed top-0 left-0 w-full h-full bg-gray-900 bg-opacity-90 z-20">
+        <div class="bg-white w-80 h-full absolute right-0 p-6">
+            <div class="flex justify-end mb-4">
+                <button id="close-menu-btn" class="text-gray-700 focus:outline-none" aria-label="Close Menu">
+                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
+            <nav class="block">
+                <ul class="space-y-4">
+                    <li><a href="#home" class="block text-lg text-gray-800 hover:text-brown-600 transition duration-300">Home</a></li>
+                    <li><a href="#menu" class="block text-lg text-gray-800 hover:text-brown-600 transition duration-300">Menu</a></li>
+                    <li><a href="#blog" class="block text-lg text-gray-800 hover:text-brown-600 transition duration-300">Blog</a></li>
+                    <li><a href="#contact" class="block text-lg text-gray-800 hover:text-brown-600 transition duration-300">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+
+    <main>
+        <section id="home" class="container mx-auto px-4 py-20 flex flex-col md:flex-row items-center justify-between">
+            <div class="md:w-1/2 text-center md:text-left mb-8 md:mb-0">
+                <h1 class="text-4xl font-semibold text-brown-700 mb-4">Freshly Roasted Coffee</h1>
+                <p class="text-gray-600 mb-8">Explore the best coffee in town.</p>
+                <a href="#menu" class="bg-brown-600 text-white px-8 py-3 rounded-full hover:bg-brown-700 transition duration-300">Shop Now</a>
+            </div>
+            <div class="md:w-1/2">
+                <img src="coffee-image.jpg" alt="Coffee Image" class="rounded-lg shadow-lg w-full">
+            </div>
+        </section>
+
+        <section id="menu" class="bg-gray-50 py-20">
+            <div class="container mx-auto px-4">
+                <h2 class="text-3xl font-semibold text-center text-brown-700 mb-12">Top Categories</h2>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <div class="bg-white rounded-lg shadow-md p-6 flex flex-col items-center">
+                        <img src="coffee-mocha.jpg" alt="Coffee Mocha" class="rounded-lg mb-4 w-32 h-32 object-cover">
+                        <h3 class="text-xl font-semibold text-gray-800 mb-2">Coffee Mocha</h3>
+                        <a href="#" class="text-brown-600 hover:text-brown-700 transition duration-300">View More</a>
+                    </div>
+                    <div class="bg-white rounded-lg shadow-md p-6 flex flex-col items-center">
+                        <img src="espresso-americano.jpg" alt="Espresso Americano" class="rounded-lg mb-4 w-32 h-32 object-cover">
+                        <h3 class="text-xl font-semibold text-gray-800 mb-2">Espresso Americano</h3>
+                         <a href="#" class="text-brown-600 hover:text-brown-700 transition duration-300">View More</a>
+                    </div>
+                    <div class="bg-white rounded-lg shadow-md p-6 flex flex-col items-center">
+                        <img src="cappuccino.jpg" alt="Cappuccino" class="rounded-lg mb-4 w-32 h-32 object-cover">
+                        <h3 class="text-xl font-semibold text-gray-800 mb-2">Cappuccino</h3>
+                        <a href="#" class="text-brown-600 hover:text-brown-700 transition duration-300">View More</a>
+                    </div>
+                </div>
+
+                <h2 class="text-3xl font-semibold text-center text-brown-700 mt-20 mb-12">Top Milk Shakes</h2>
+                 <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <div class="bg-white rounded-lg shadow-md p-6 flex flex-col items-center">
+                        <img src="mocha-shake.jpg" alt="Mocha Shake" class="rounded-lg mb-4 w-32 h-32 object-cover">
+                        <h3 class="text-xl font-semibold text-gray-800 mb-2">Mocha Shake</h3>
+                        <p class="text-gray-600 mb-4">$20.00</p>
+                        <a href="#" class="bg-brown-600 text-white px-6 py-2 rounded-full hover:bg-brown-700 transition duration-300">Order Now</a>
+                    </div>
+                    <div class="bg-white rounded-lg shadow-md p-6 flex flex-col items-center">
+                        <img src="lavender-shake.jpg" alt="Lavender Shake" class="rounded-lg mb-4 w-32 h-32 object-cover">
+                        <h3 class="text-xl font-semibold text-gray-800 mb-2">Lavender Shake</h3>
+                        <p class="text-gray-600 mb-4">$20.00</p>
+                        <a href="#" class="bg-brown-600 text-white px-6 py-2 rounded-full hover:bg-brown-700 transition duration-300">Order Now</a>
+                    </div>
+                    <div class="bg-white rounded-lg shadow-md p-6 flex flex-col items-center">
+                        <img src="caramel-shake.jpg" alt="Caramel Shake" class="rounded-lg mb-4 w-32 h-32 object-cover">
+                        <h3 class="text-xl font-semibold text-gray-800 mb-2">Caramel Shake</h3>
+                        <p class="text-gray-600 mb-4">$20.00</p>
+                        <a href="#" class="bg-brown-600 text-white px-6 py-2 rounded-full hover:bg-brown-700 transition duration-300">Order Now</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="blog" class="bg-gray-100 py-20">
+            <div class="container mx-auto px-4">
+                <h2 class="text-3xl font-semibold text-center text-brown-700 mb-12">Latest Blogs</h2>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <div class="bg-white rounded-lg shadow-md p-6 flex flex-col">
+                        <img src="blog-post-1.jpg" alt="Blog Post 1" class="rounded-lg mb-4 w-full h-48 object-cover">
+                        <h3 class="text-xl font-semibold text-gray-800 mb-2">Coffee Connoisseur</h3>
+                        <p class="text-gray-600">By [Author Name] | [Date]</p>
+                        <p class="text-gray-700 mt-4">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</p>
+                    </div>
+                    <div class="bg-white rounded-lg shadow-md p-6 flex flex-col">
+                        <img src="blog-post-2.jpg" alt="Blog Post 2" class="rounded-lg mb-4 w-full h-48 object-cover">
+                        <h3 class="text-xl font-semibold text-gray-800 mb-2">Coffee Connoisseur</h3>
+                        <p class="text-gray-600">By [Author Name] | [Date]</p>
+                        <p class="text-gray-700 mt-4">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</p>
+                    </div>
+                    <div class="bg-white rounded-lg shadow-md p-6 flex flex-col">
+                        <img src="blog-post-3.jpg" alt="Blog Post 3" class="rounded-lg mb-4 w-full h-48 object-cover">
+                        <h3 class="text-xl font-semibold text-gray-800 mb-2">Coffee Connoisseur</h3>
+                        <p class="text-gray-600">By [Author Name] | [Date]</p>
+                        <p class="text-gray-700 mt-4">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="contact" class="bg-brown-100 py-20">
+            <div class="container mx-auto px-4">
+                <h2 class="text-3xl font-semibold text-center text-brown-700 mb-12">Contact Us</h2>
+                <div class="bg-white rounded-lg shadow-md p-8 md:p-12">
+                    <form class="space-y-6">
+                        <div>
+                            <label for="name" class="block text-gray-700 text-sm font-bold mb-2">Name</label>
+                            <input type="text" id="name" placeholder="Your Name" class="shadow appearance-none border rounded w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                        </div>
+                        <div>
+                            <label for="email" class="block text-gray-700 text-sm font-bold mb-2">Email</label>
+                            <input type="email" id="email" placeholder="Your Email" class="shadow appearance-none border rounded w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                        </div>
+                        <div>
+                            <label for="message" class="block text-gray-700 text-sm font-bold mb-2">Message</label>
+                            <textarea id="message" placeholder="Your Message" class="shadow appearance-none border rounded w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"></textarea>
+                        </div>
+                        <button type="submit" class="bg-brown-600 text-white px-8 py-3 rounded-full hover:bg-brown-700 transition duration-300 w-full md:w-auto">Send Message</button>
+                    </form>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-gray-800 text-white py-8">
+        <div class="container mx-auto px-4 text-center">
+            <p>&copy; 2024 Coffee Shop. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Function to create falling coffee beans
+        function createFallingBeans() {
+            const beanContainer = document.getElementById('bean-container');
+            const numberOfBeans = 50; // Adjust as needed
+
+            for (let i = 0; i < numberOfBeans; i++) {
+                const bean = document.createElement('div');
+                bean.classList.add('bean');
+                bean.style.left = `${Math.random() * 100}vw`; /* Random horizontal position */
+                bean.style.animationDuration = `${Math.random() * 2 + 5}s`; /* Random animation duration */
+                bean.style.opacity = Math.random(); /* Random opacity */
+                bean.style.transform = `scale(${Math.random() * 0.5 + 0.5})`; /* Random scale */
+                beanContainer.appendChild(bean);
+            }
+        }
+
+        // Mobile menu toggle functionality
+        const hamburgerBtn = document.getElementById('hamburger-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const closeMenuBtn = document.getElementById('close-menu-btn');
+        const mobileMenuLinks = mobileMenu.querySelectorAll('a');
+        const navLinks = document.querySelectorAll('header nav a');
+        const sections = document.querySelectorAll('section');
+
+        function toggleMobileMenu() {
+            mobileMenu.classList.toggle('hidden');
+        }
+
+        hamburgerBtn.addEventListener('click', toggleMobileMenu);
+        closeMenuBtn.addEventListener('click', toggleMobileMenu);
+        mobileMenuLinks.forEach(link => {
+            link.addEventListener('click', toggleMobileMenu);
+        });
+
+        // Add this event listener to handle clicks outside the menu
+        document.addEventListener('click', (event) => {
+            if (!mobileMenu.classList.contains('hidden') && !mobileMenu.contains(event.target) && event.target !== hamburgerBtn) {
+                toggleMobileMenu();
+            }
+        });
+
+        // Smooth scrolling for all links
+        function smoothScroll(targetId) {
+            const targetElement = document.getElementById(targetId);
+            if (targetElement) {
+                window.scrollTo({
+                    top: targetElement.offsetTop - document.querySelector('header').offsetHeight,
+                    behavior: 'smooth'
+                });
+            }
+        }
+
+        navLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const targetId = link.getAttribute('href').slice(1); // Remove the '#'
+                smoothScroll(targetId);
+            });
+        });
+
+        mobileMenuLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const targetId = link.getAttribute('href').slice(1); // Remove the '#'
+                smoothScroll(targetId);
+                toggleMobileMenu(); // Close menu after clicking a link
+            });
+        });
+
+        // Highlight active section in nav
+        function updateActiveNavLink() {
+            let currentSectionId = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+                if (window.scrollY >= sectionTop - document.querySelector('header').offsetHeight - 50 &&
+                    window.scrollY < sectionTop + sectionHeight - document.querySelector('header').offsetHeight - 50) {
+                    currentSectionId = section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href').slice(1) === currentSectionId) {
+                    link.classList.add('active');
+                }
+            });
+        }
+
+        window.addEventListener('scroll', updateActiveNavLink);
+
+
+        // Initialize falling beans on page load
+        window.onload = function() {
+            createFallingBeans();
+        };
+    </script>
+</body>
+</html>
