@@ -3,287 +3,1220 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Coffee Shop</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <title>Brew Haven | Artisan Coffee Shop</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-        /* Custom styles for falling coffee beans animation */
-        #bean-container {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none; /* Allows clicks to pass through */
-            overflow: hidden;
-            z-index: -1;
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        coffee: {
+                            50: '#f8f3ec',
+                            100: '#e8d9c5',
+                            200: '#d8bf9e',
+                            300: '#c8a577',
+                            400: '#b88b50',
+                            500: '#a87129',
+                            600: '#875a20',
+                            700: '#654318',
+                            800: '#432c10',
+                            900: '#211508',
+                        },
+                        latte: '#f5f0e6',
+                        mocha: '#6f4e37',
+                    },
+                    fontFamily: {
+                        'playfair': ['Playfair Display', 'serif'],
+                        'poppins': ['Poppins', 'sans-serif'],
+                    },
+                    animation: {
+                        'float': 'float 6s ease-in-out infinite',
+                        'fadeIn': 'fadeIn 1s ease-in',
+                        'pulse-slow': 'pulse 3s infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-20px)' },
+                        },
+                        fadeIn: {
+                            '0%': { opacity: '0' },
+                            '100%': { opacity: '1' },
+                        },
+                    },
+                }
+            }
         }
+    </script>
+    <style>
+        /* Custom styles */
+        .hero-gradient {
+            background: linear-gradient(135deg, rgba(168,113,41,0.9) 0%, rgba(111,78,55,0.9) 100%);
+        }
+        
+        .menu-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        
+        .testimonial-card {
+            background: linear-gradient(145deg, #ffffff 0%, #f8f3ec 100%);
+            box-shadow: 5px 5px 15px rgba(0,0,0,0.1);
+        }
+        
         .bean {
             position: absolute;
-            width: 10px; /* Adjust size as needed */
-            height: 10px;
-            background-color: #795548; /* Coffee bean color */
-            border-radius: 50%;
-            top: -10px; /* Start above the viewport */
+            width: 12px;
+            height: 8px;
+            background-color: #3e2723;
+            border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+            opacity: 0.7;
             animation: fall linear infinite;
+            transform: rotate(var(--rotation));
         }
+        
         @keyframes fall {
             to {
-                transform: translateY(100vh); /* Fall to the bottom of the viewport */
+                transform: translateY(100vh) rotate(360deg);
             }
+        }
+        
+        .parallax {
+            background-attachment: fixed;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+        
+        .floating-btn {
+            animation: float 4s ease-in-out infinite;
+        }
+        
+        .active-nav {
+            color: #a87129;
+            font-weight: 600;
+            position: relative;
+        }
+        
+        .active-nav::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background-color: #a87129;
+            animation: underline 0.3s ease-out;
+        }
+        
+        @keyframes underline {
+            from { width: 0; }
+            to { width: 100%; }
+        }
+        
+        .coffee-steam {
+            position: absolute;
+            width: 8px;
+            height: 30px;
+            background: rgba(255, 255, 255, 0.6);
+            border-radius: 50% 50% 0 0;
+            filter: blur(4px);
+            animation: steam 4s infinite ease-out;
+            opacity: 0;
+        }
+        
+        @keyframes steam {
+            0% { transform: translateY(0) scale(1); opacity: 0; }
+            50% { opacity: 0.8; }
+            100% { transform: translateY(-50px) scale(1.5); opacity: 0; }
         }
     </style>
 </head>
-<body class="bg-gray-100 font-poppins">
-    <div id="bean-container"></div> <header class="bg-white shadow-md sticky top-0 z-10">
-        <div class="container mx-auto px-4 py-6 flex justify-between items-center">
-            <a href="#" class="text-2xl font-semibold text-brown-600">Coffee Shop</a>
+<body class="bg-latte font-poppins text-coffee-800">
+    <!-- Coffee beans background animation -->
+    <div id="bean-container" class="fixed top-0 left-0 w-full h-full pointer-events-none overflow-hidden z-0"></div>
+    
+    <!-- Header -->
+    <header class="bg-white/90 backdrop-blur-md shadow-sm sticky top-0 z-50 transition-all duration-300">
+        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+            <a href="#" class="text-3xl font-bold font-playfair text-coffee-600 flex items-center">
+                <i class="fas fa-mug-hot text-coffee-500 mr-2"></i>
+                <span>Brew Haven</span>
+            </a>
+            
             <nav class="hidden md:block">
-                <ul class="flex space-x-6">
-                    <li><a href="#home" class="hover:text-brown-600 transition duration-300">Home</a></li>
-                    <li><a href="#menu" class="hover:text-brown-600 transition duration-300">Menu</a></li>
-                    <li><a href="#blog" class="hover:text-brown-600 transition duration-300">Blog</a></li>
-                    <li><a href="#contact" class="hover:text-brown-600 transition duration-300">Contact</a></li>
+                <ul class="flex space-x-8">
+                    <li><a href="#home" class="nav-link hover:text-coffee-600 transition duration-300 py-2">Home</a></li>
+                    <li><a href="#menu" class="nav-link hover:text-coffee-600 transition duration-300 py-2">Menu</a></li>
+                    <li><a href="#about" class="nav-link hover:text-coffee-600 transition duration-300 py-2">Our Story</a></li>
+                    <li><a href="#testimonials" class="nav-link hover:text-coffee-600 transition duration-300 py-2">Testimonials</a></li>
+                    <li><a href="#contact" class="nav-link hover:text-coffee-600 transition duration-300 py-2">Contact</a></li>
                 </ul>
             </nav>
-            <button id="hamburger-btn" class="md:hidden text-brown-600 focus:outline-none" aria-label="Toggle Navigation">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
-                </svg>
-            </button>
+            
+            <div class="flex items-center space-x-4">
+                <button id="cart-btn" class="relative text-coffee-600 hover:text-coffee-800 transition duration-300">
+                    <i class="fas fa-shopping-cart text-xl"></i>
+                    <span id="cart-count" class="absolute -top-2 -right-2 bg-coffee-600 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center hidden">0</span>
+                </button>
+                
+                <button id="hamburger-btn" class="md:hidden text-coffee-600 focus:outline-none" aria-label="Toggle Navigation">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-8 h-8">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+                    </svg>
+                </button>
+            </div>
         </div>
     </header>
 
-    <div id="mobile-menu" class="hidden fixed top-0 left-0 w-full h-full bg-gray-900 bg-opacity-90 z-20">
-        <div class="bg-white w-80 h-full absolute right-0 p-6">
-            <div class="flex justify-end mb-4">
+    <!-- Mobile Menu -->
+    <div id="mobile-menu" class="hidden fixed top-0 left-0 w-full h-full bg-gray-900/90 z-50 backdrop-blur-sm">
+        <div class="bg-white w-4/5 sm:w-96 h-full absolute right-0 p-8 shadow-xl">
+            <div class="flex justify-between items-center mb-12">
+                <a href="#" class="text-2xl font-bold font-playfair text-coffee-600">
+                    <i class="fas fa-mug-hot text-coffee-500 mr-2"></i>
+                    Brew Haven
+                </a>
                 <button id="close-menu-btn" class="text-gray-700 focus:outline-none" aria-label="Close Menu">
-                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-8 h-8">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
                     </svg>
                 </button>
             </div>
+            
             <nav class="block">
-                <ul class="space-y-4">
-                    <li><a href="#home" class="block text-lg text-gray-800 hover:text-brown-600 transition duration-300">Home</a></li>
-                    <li><a href="#menu" class="block text-lg text-gray-800 hover:text-brown-600 transition duration-300">Menu</a></li>
-                    <li><a href="#blog" class="block text-lg text-gray-800 hover:text-brown-600 transition duration-300">Blog</a></li>
-                    <li><a href="#contact" class="block text-lg text-gray-800 hover:text-brown-600 transition duration-300">Contact</a></li>
+                <ul class="space-y-6">
+                    <li><a href="#home" class="block text-xl text-gray-800 hover:text-coffee-600 transition duration-300 py-3 border-b border-gray-100">Home</a></li>
+                    <li><a href="#menu" class="block text-xl text-gray-800 hover:text-coffee-600 transition duration-300 py-3 border-b border-gray-100">Menu</a></li>
+                    <li><a href="#about" class="block text-xl text-gray-800 hover:text-coffee-600 transition duration-300 py-3 border-b border-gray-100">Our Story</a></li>
+                    <li><a href="#testimonials" class="block text-xl text-gray-800 hover:text-coffee-600 transition duration-300 py-3 border-b border-gray-100">Testimonials</a></li>
+                    <li><a href="#contact" class="block text-xl text-gray-800 hover:text-coffee-600 transition duration-300 py-3 border-b border-gray-100">Contact</a></li>
                 </ul>
             </nav>
+            
+            <div class="absolute bottom-8 left-8 right-8">
+                <div class="flex justify-center space-x-4">
+                    <a href="#" class="text-coffee-600 hover:text-coffee-800 transition duration-300 text-xl"><i class="fab fa-facebook"></i></a>
+                    <a href="#" class="text-coffee-600 hover:text-coffee-800 transition duration-300 text-xl"><i class="fab fa-instagram"></i></a>
+                    <a href="#" class="text-coffee-600 hover:text-coffee-800 transition duration-300 text-xl"><i class="fab fa-twitter"></i></a>
+                </div>
+            </div>
         </div>
     </div>
 
-    <main>
-        <section id="home" class="container mx-auto px-4 py-20 flex flex-col md:flex-row items-center justify-between">
-            <div class="md:w-1/2 text-center md:text-left mb-8 md:mb-0">
-                <h1 class="text-4xl font-semibold text-brown-700 mb-4">Freshly Roasted Coffee</h1>
-                <p class="text-gray-600 mb-8">Explore the best coffee in town.</p>
-                <a href="#menu" class="bg-brown-600 text-white px-8 py-3 rounded-full hover:bg-brown-700 transition duration-300">Shop Now</a>
+    <!-- Hero Section -->
+    <section id="home" class="relative h-screen flex items-center justify-center overflow-hidden">
+        <div class="absolute inset-0 hero-gradient z-10"></div>
+        <div class="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1511920170033-f8396924c348?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80')] bg-cover bg-center"></div>
+        
+        <div class="container mx-auto px-4 relative z-20 text-center">
+            <h1 class="text-4xl md:text-6xl font-bold font-playfair text-white mb-6 animate-fadeIn">
+                Artisan Coffee <span class="text-coffee-200">Crafted</span> With Love
+            </h1>
+            <p class="text-xl md:text-2xl text-coffee-100 mb-10 max-w-2xl mx-auto">
+                Discover the perfect blend of tradition and innovation in every cup at Brew Haven.
+            </p>
+            <div class="flex flex-col sm:flex-row justify-center gap-4">
+                <a href="#menu" class="bg-white text-coffee-700 px-8 py-4 rounded-full font-semibold hover:bg-coffee-100 hover:shadow-lg transition duration-300 transform hover:scale-105">
+                    Explore Menu <i class="fas fa-arrow-right ml-2"></i>
+                </a>
+                <a href="#contact" class="border-2 border-white text-white px-8 py-4 rounded-full font-semibold hover:bg-white/20 transition duration-300 transform hover:scale-105">
+                    Visit Us <i class="fas fa-map-marker-alt ml-2"></i>
+                </a>
             </div>
-            <div class="md:w-1/2">
-                <img src="coffee-image.jpg" alt="Coffee Image" class="rounded-lg shadow-lg w-full">
+        </div>
+        
+        <!-- Animated floating coffee cup -->
+        <div class="absolute bottom-20 left-1/2 transform -translate-x-1/2 z-20 animate-float">
+            <div class="relative">
+                <img src="https://cdn-icons-png.flaticon.com/512/924/924514.png" alt="Coffee Cup" class="w-24 h-24 opacity-90">
+                <!-- Coffee steam animations -->
+                <div class="coffee-steam" style="left: 20px; animation-delay: 0.5s;"></div>
+                <div class="coffee-steam" style="left: 40px; animation-delay: 1s;"></div>
+                <div class="coffee-steam" style="left: 60px; animation-delay: 1.5s;"></div>
             </div>
-        </section>
+        </div>
+        
+        <!-- Scroll indicator -->
+        <a href="#menu" class="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-20 text-white animate-bounce">
+            <i class="fas fa-chevron-down text-2xl"></i>
+        </a>
+    </section>
 
-        <section id="menu" class="bg-gray-50 py-20">
-            <div class="container mx-auto px-4">
-                <h2 class="text-3xl font-semibold text-center text-brown-700 mb-12">Top Categories</h2>
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                    <div class="bg-white rounded-lg shadow-md p-6 flex flex-col items-center">
-                        <img src="coffee-mocha.jpg" alt="Coffee Mocha" class="rounded-lg mb-4 w-32 h-32 object-cover">
-                        <h3 class="text-xl font-semibold text-gray-800 mb-2">Coffee Mocha</h3>
-                        <a href="#" class="text-brown-600 hover:text-brown-700 transition duration-300">View More</a>
-                    </div>
-                    <div class="bg-white rounded-lg shadow-md p-6 flex flex-col items-center">
-                        <img src="espresso-americano.jpg" alt="Espresso Americano" class="rounded-lg mb-4 w-32 h-32 object-cover">
-                        <h3 class="text-xl font-semibold text-gray-800 mb-2">Espresso Americano</h3>
-                         <a href="#" class="text-brown-600 hover:text-brown-700 transition duration-300">View More</a>
-                    </div>
-                    <div class="bg-white rounded-lg shadow-md p-6 flex flex-col items-center">
-                        <img src="cappuccino.jpg" alt="Cappuccino" class="rounded-lg mb-4 w-32 h-32 object-cover">
-                        <h3 class="text-xl font-semibold text-gray-800 mb-2">Cappuccino</h3>
-                        <a href="#" class="text-brown-600 hover:text-brown-700 transition duration-300">View More</a>
-                    </div>
+    <!-- Stats Bar -->
+    <div class="bg-coffee-700 text-white py-8 shadow-md">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
+                <div class="p-4">
+                    <div class="text-3xl md:text-4xl font-bold font-playfair mb-2" id="coffee-counter">0</div>
+                    <div class="text-coffee-200">Cups Brewed Daily</div>
                 </div>
-
-                <h2 class="text-3xl font-semibold text-center text-brown-700 mt-20 mb-12">Top Milk Shakes</h2>
-                 <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                    <div class="bg-white rounded-lg shadow-md p-6 flex flex-col items-center">
-                        <img src="mocha-shake.jpg" alt="Mocha Shake" class="rounded-lg mb-4 w-32 h-32 object-cover">
-                        <h3 class="text-xl font-semibold text-gray-800 mb-2">Mocha Shake</h3>
-                        <p class="text-gray-600 mb-4">$20.00</p>
-                        <a href="#" class="bg-brown-600 text-white px-6 py-2 rounded-full hover:bg-brown-700 transition duration-300">Order Now</a>
-                    </div>
-                    <div class="bg-white rounded-lg shadow-md p-6 flex flex-col items-center">
-                        <img src="lavender-shake.jpg" alt="Lavender Shake" class="rounded-lg mb-4 w-32 h-32 object-cover">
-                        <h3 class="text-xl font-semibold text-gray-800 mb-2">Lavender Shake</h3>
-                        <p class="text-gray-600 mb-4">$20.00</p>
-                        <a href="#" class="bg-brown-600 text-white px-6 py-2 rounded-full hover:bg-brown-700 transition duration-300">Order Now</a>
-                    </div>
-                    <div class="bg-white rounded-lg shadow-md p-6 flex flex-col items-center">
-                        <img src="caramel-shake.jpg" alt="Caramel Shake" class="rounded-lg mb-4 w-32 h-32 object-cover">
-                        <h3 class="text-xl font-semibold text-gray-800 mb-2">Caramel Shake</h3>
-                        <p class="text-gray-600 mb-4">$20.00</p>
-                        <a href="#" class="bg-brown-600 text-white px-6 py-2 rounded-full hover:bg-brown-700 transition duration-300">Order Now</a>
-                    </div>
+                <div class="p-4">
+                    <div class="text-3xl md:text-4xl font-bold font-playfair mb-2">12+</div>
+                    <div class="text-coffee-200">Coffee Varieties</div>
                 </div>
-            </div>
-        </section>
-
-        <section id="blog" class="bg-gray-100 py-20">
-            <div class="container mx-auto px-4">
-                <h2 class="text-3xl font-semibold text-center text-brown-700 mb-12">Latest Blogs</h2>
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                    <div class="bg-white rounded-lg shadow-md p-6 flex flex-col">
-                        <img src="blog-post-1.jpg" alt="Blog Post 1" class="rounded-lg mb-4 w-full h-48 object-cover">
-                        <h3 class="text-xl font-semibold text-gray-800 mb-2">Coffee Connoisseur</h3>
-                        <p class="text-gray-600">By [Author Name] | [Date]</p>
-                        <p class="text-gray-700 mt-4">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</p>
-                    </div>
-                    <div class="bg-white rounded-lg shadow-md p-6 flex flex-col">
-                        <img src="blog-post-2.jpg" alt="Blog Post 2" class="rounded-lg mb-4 w-full h-48 object-cover">
-                        <h3 class="text-xl font-semibold text-gray-800 mb-2">Coffee Connoisseur</h3>
-                        <p class="text-gray-600">By [Author Name] | [Date]</p>
-                        <p class="text-gray-700 mt-4">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</p>
-                    </div>
-                    <div class="bg-white rounded-lg shadow-md p-6 flex flex-col">
-                        <img src="blog-post-3.jpg" alt="Blog Post 3" class="rounded-lg mb-4 w-full h-48 object-cover">
-                        <h3 class="text-xl font-semibold text-gray-800 mb-2">Coffee Connoisseur</h3>
-                        <p class="text-gray-600">By [Author Name] | [Date]</p>
-                        <p class="text-gray-700 mt-4">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</p>
-                    </div>
+                <div class="p-4">
+                    <div class="text-3xl md:text-4xl font-bold font-playfair mb-2">5</div>
+                    <div class="text-coffee-200">Local Roasters</div>
+                </div>
+                <div class="p-4">
+                    <div class="text-3xl md:text-4xl font-bold font-playfair mb-2">100%</div>
+                    <div class="text-coffee-200">Organic Beans</div>
                 </div>
             </div>
-        </section>
+        </div>
+    </div>
 
-        <section id="contact" class="bg-brown-100 py-20">
-            <div class="container mx-auto px-4">
-                <h2 class="text-3xl font-semibold text-center text-brown-700 mb-12">Contact Us</h2>
-                <div class="bg-white rounded-lg shadow-md p-8 md:p-12">
-                    <form class="space-y-6">
-                        <div>
-                            <label for="name" class="block text-gray-700 text-sm font-bold mb-2">Name</label>
-                            <input type="text" id="name" placeholder="Your Name" class="shadow appearance-none border rounded w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+    <!-- Menu Section -->
+    <section id="menu" class="py-20 bg-white">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-16">
+                <span class="text-coffee-500 font-semibold">Our Selection</span>
+                <h2 class="text-4xl font-bold font-playfair text-coffee-800 mt-2 mb-4">Coffee & Delights</h2>
+                <div class="w-20 h-1 bg-coffee-600 mx-auto"></div>
+            </div>
+            
+            <!-- Menu Filter -->
+            <div class="flex justify-center mb-12">
+                <div class="inline-flex rounded-full bg-coffee-100 p-1">
+                    <button class="menu-filter-btn active px-6 py-2 rounded-full font-medium" data-category="all">All</button>
+                    <button class="menu-filter-btn px-6 py-2 rounded-full font-medium" data-category="coffee">Coffee</button>
+                    <button class="menu-filter-btn px-6 py-2 rounded-full font-medium" data-category="tea">Tea</button>
+                    <button class="menu-filter-btn px-6 py-2 rounded-full font-medium" data-category="pastry">Pastries</button>
+                </div>
+            </div>
+            
+            <!-- Menu Items -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Coffee Item 1 -->
+                <div class="menu-card bg-white rounded-xl shadow-lg overflow-hidden transition-all duration-300 hover:shadow-xl" data-category="coffee">
+                    <div class="relative overflow-hidden h-64">
+                        <img src="https://images.unsplash.com/photo-1517701550927-30cf4ba1dba5?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80" alt="Espresso" class="w-full h-full object-cover transition duration-500 hover:scale-110">
+                        <div class="absolute top-4 right-4 bg-coffee-600 text-white text-xs font-bold px-3 py-1 rounded-full">Hot</div>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex justify-between items-start">
+                            <h3 class="text-xl font-bold font-playfair text-coffee-800">Espresso</h3>
+                            <span class="text-coffee-600 font-bold">$3.50</span>
                         </div>
-                        <div>
-                            <label for="email" class="block text-gray-700 text-sm font-bold mb-2">Email</label>
-                            <input type="email" id="email" placeholder="Your Email" class="shadow appearance-none border rounded w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                        <p class="text-gray-600 mt-2">A concentrated coffee beverage brewed by forcing hot water under pressure through finely ground coffee.</p>
+                        <div class="mt-4 flex justify-between items-center">
+                            <div class="flex items-center">
+                                <i class="fas fa-star text-yellow-400"></i>
+                                <span class="ml-1 text-gray-700">4.8</span>
+                            </div>
+                            <button class="add-to-cart-btn bg-coffee-600 text-white px-4 py-2 rounded-full text-sm hover:bg-coffee-700 transition duration-300 flex items-center">
+                                <i class="fas fa-plus mr-2"></i> Add to Order
+                            </button>
                         </div>
-                        <div>
-                            <label for="message" class="block text-gray-700 text-sm font-bold mb-2">Message</label>
-                            <textarea id="message" placeholder="Your Message" class="shadow appearance-none border rounded w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"></textarea>
+                    </div>
+                </div>
+                
+                <!-- Coffee Item 2 -->
+                <div class="menu-card bg-white rounded-xl shadow-lg overflow-hidden transition-all duration-300 hover:shadow-xl" data-category="coffee">
+                    <div class="relative overflow-hidden h-64">
+                        <img src="https://images.unsplash.com/photo-1568649929103-28ffbefaca1e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80" alt="Cappuccino" class="w-full h-full object-cover transition duration-500 hover:scale-110">
+                        <div class="absolute top-4 right-4 bg-coffee-600 text-white text-xs font-bold px-3 py-1 rounded-full">Hot</div>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex justify-between items-start">
+                            <h3 class="text-xl font-bold font-playfair text-coffee-800">Cappuccino</h3>
+                            <span class="text-coffee-600 font-bold">$4.50</span>
                         </div>
-                        <button type="submit" class="bg-brown-600 text-white px-8 py-3 rounded-full hover:bg-brown-700 transition duration-300 w-full md:w-auto">Send Message</button>
+                        <p class="text-gray-600 mt-2">Espresso with hot milk and steamed milk foam, traditionally prepared with microfoam.</p>
+                        <div class="mt-4 flex justify-between items-center">
+                            <div class="flex items-center">
+                                <i class="fas fa-star text-yellow-400"></i>
+                                <span class="ml-1 text-gray-700">4.9</span>
+                            </div>
+                            <button class="add-to-cart-btn bg-coffee-600 text-white px-4 py-2 rounded-full text-sm hover:bg-coffee-700 transition duration-300 flex items-center">
+                                <i class="fas fa-plus mr-2"></i> Add to Order
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Coffee Item 3 -->
+                <div class="menu-card bg-white rounded-xl shadow-lg overflow-hidden transition-all duration-300 hover:shadow-xl" data-category="coffee">
+                    <div class="relative overflow-hidden h-64">
+                        <img src="https://images.unsplash.com/photo-1551029506-0807df4e2031?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1974&q=80" alt="Iced Latte" class="w-full h-full object-cover transition duration-500 hover:scale-110">
+                        <div class="absolute top-4 right-4 bg-blue-500 text-white text-xs font-bold px-3 py-1 rounded-full">Iced</div>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex justify-between items-start">
+                            <h3 class="text-xl font-bold font-playfair text-coffee-800">Iced Latte</h3>
+                            <span class="text-coffee-600 font-bold">$4.75</span>
+                        </div>
+                        <p class="text-gray-600 mt-2">Espresso with cold milk poured over ice, creating a refreshing summer drink.</p>
+                        <div class="mt-4 flex justify-between items-center">
+                            <div class="flex items-center">
+                                <i class="fas fa-star text-yellow-400"></i>
+                                <span class="ml-1 text-gray-700">4.7</span>
+                            </div>
+                            <button class="add-to-cart-btn bg-coffee-600 text-white px-4 py-2 rounded-full text-sm hover:bg-coffee-700 transition duration-300 flex items-center">
+                                <i class="fas fa-plus mr-2"></i> Add to Order
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Tea Item -->
+                <div class="menu-card bg-white rounded-xl shadow-lg overflow-hidden transition-all duration-300 hover:shadow-xl" data-category="tea">
+                    <div class="relative overflow-hidden h-64">
+                        <img src="https://images.unsplash.com/photo-1558160074-4d7d8bdf4256?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80" alt="Chai Tea" class="w-full h-full object-cover transition duration-500 hover:scale-110">
+                        <div class="absolute top-4 right-4 bg-green-600 text-white text-xs font-bold px-3 py-1 rounded-full">Hot</div>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex justify-between items-start">
+                            <h3 class="text-xl font-bold font-playfair text-coffee-800">Spiced Chai</h3>
+                            <span class="text-coffee-600 font-bold">$4.25</span>
+                        </div>
+                        <p class="text-gray-600 mt-2">Black tea infused with warming spices like cinnamon, cardamom, and ginger, served with milk.</p>
+                        <div class="mt-4 flex justify-between items-center">
+                            <div class="flex items-center">
+                                <i class="fas fa-star text-yellow-400"></i>
+                                <span class="ml-1 text-gray-700">4.6</span>
+                            </div>
+                            <button class="add-to-cart-btn bg-coffee-600 text-white px-4 py-2 rounded-full text-sm hover:bg-coffee-700 transition duration-300 flex items-center">
+                                <i class="fas fa-plus mr-2"></i> Add to Order
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Pastry Item 1 -->
+                <div class="menu-card bg-white rounded-xl shadow-lg overflow-hidden transition-all duration-300 hover:shadow-xl" data-category="pastry">
+                    <div class="relative overflow-hidden h-64">
+                        <img src="https://images.unsplash.com/photo-1559620192-032c4bc4674e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1928&q=80" alt="Croissant" class="w-full h-full object-cover transition duration-500 hover:scale-110">
+                        <div class="absolute top-4 right-4 bg-amber-600 text-white text-xs font-bold px-3 py-1 rounded-full">Fresh</div>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex justify-between items-start">
+                            <h3 class="text-xl font-bold font-playfair text-coffee-800">Butter Croissant</h3>
+                            <span class="text-coffee-600 font-bold">$3.25</span>
+                        </div>
+                        <p class="text-gray-600 mt-2">Flaky, buttery pastry made with layered yeast-leavened dough, baked to golden perfection.</p>
+                        <div class="mt-4 flex justify-between items-center">
+                            <div class="flex items-center">
+                                <i class="fas fa-star text-yellow-400"></i>
+                                <span class="ml-1 text-gray-700">4.9</span>
+                            </div>
+                            <button class="add-to-cart-btn bg-coffee-600 text-white px-4 py-2 rounded-full text-sm hover:bg-coffee-700 transition duration-300 flex items-center">
+                                <i class="fas fa-plus mr-2"></i> Add to Order
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Pastry Item 2 -->
+                <div class="menu-card bg-white rounded-xl shadow-lg overflow-hidden transition-all duration-300 hover:shadow-xl" data-category="pastry">
+                    <div class="relative overflow-hidden h-64">
+                        <img src="https://images.unsplash.com/photo-1607013251379-e6aec262cc48?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1974&q=80" alt="Cinnamon Roll" class="w-full h-full object-cover transition duration-500 hover:scale-110">
+                        <div class="absolute top-4 right-4 bg-amber-600 text-white text-xs font-bold px-3 py-1 rounded-full">Fresh</div>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex justify-between items-start">
+                            <h3 class="text-xl font-bold font-playfair text-coffee-800">Cinnamon Roll</h3>
+                            <span class="text-coffee-600 font-bold">$4.50</span>
+                        </div>
+                        <p class="text-gray-600 mt-2">Sweet rolled pastry with cinnamon-sugar filling, topped with cream cheese icing.</p>
+                        <div class="mt-4 flex justify-between items-center">
+                            <div class="flex items-center">
+                                <i class="fas fa-star text-yellow-400"></i>
+                                <span class="ml-1 text-gray-700">4.8</span>
+                            </div>
+                            <button class="add-to-cart-btn bg-coffee-600 text-white px-4 py-2 rounded-full text-sm hover:bg-coffee-700 transition duration-300 flex items-center">
+                                <i class="fas fa-plus mr-2"></i> Add to Order
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="text-center mt-12">
+                <a href="#" class="inline-block border-2 border-coffee-600 text-coffee-600 px-8 py-3 rounded-full font-semibold hover:bg-coffee-600 hover:text-white transition duration-300">
+                    View Full Menu <i class="fas fa-arrow-right ml-2"></i>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="py-20 bg-coffee-50">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col lg:flex-row items-center">
+                <div class="lg:w-1/2 mb-12 lg:mb-0 lg:pr-12">
+                    <div class="relative">
+                        <img src="https://images.unsplash.com/photo-1445116572660-236099ec97a0?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2071&q=80" alt="Coffee Beans" class="rounded-lg shadow-xl w-full">
+                        <div class="absolute -bottom-6 -right-6 bg-white p-6 rounded-lg shadow-lg w-3/4">
+                            <div class="flex items-center">
+                                <div class="bg-coffee-600 text-white p-3 rounded-full mr-4">
+                                    <i class="fas fa-award text-xl"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-coffee-800">Best Coffee Shop 2023</h4>
+                                    <p class="text-sm text-gray-600">Local Food Awards</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="lg:w-1/2">
+                    <span class="text-coffee-500 font-semibold">Our Story</span>
+                    <h2 class="text-4xl font-bold font-playfair text-coffee-800 mt-2 mb-6">Crafting Coffee Since 2010</h2>
+                    <p class="text-gray-700 mb-6">
+                        Founded by two coffee enthusiasts with a passion for quality, Brew Haven started as a small cart in the farmers market. Today, we're proud to serve our community with carefully sourced beans and artisanal brewing techniques.
+                    </p>
+                    
+                    <div class="space-y-4 mb-8">
+                        <div class="flex">
+                            <div class="text-coffee-600 mr-4 mt-1">
+                                <i class="fas fa-check-circle"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-coffee-800">Direct Trade Coffee</h4>
+                                <p class="text-gray-600">We work directly with farmers to ensure fair prices and sustainable practices.</p>
+                            </div>
+                        </div>
+                        <div class="flex">
+                            <div class="text-coffee-600 mr-4 mt-1">
+                                <i class="fas fa-check-circle"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-coffee-800">Small Batch Roasting</h4>
+                                <p class="text-gray-600">Our beans are roasted in small batches for optimal flavor and freshness.</p>
+                            </div>
+                        </div>
+                        <div class="flex">
+                            <div class="text-coffee-600 mr-4 mt-1">
+                                <i class="fas fa-check-circle"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-coffee-800">Community Focused</h4>
+                                <p class="text-gray-600">We host weekly events and support local artists and musicians.</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <a href="#" class="inline-block bg-coffee-600 text-white px-8 py-3 rounded-full font-semibold hover:bg-coffee-700 transition duration-300">
+                        Learn More <i class="fas fa-arrow-right ml-2"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section id="testimonials" class="py-20 bg-coffee-800 text-white parallax" style="background-image: url('https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80');">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-16">
+                <span class="text-coffee-200 font-semibold">Testimonials</span>
+                <h2 class="text-4xl font-bold font-playfair text-white mt-2 mb-4">What Our Customers Say</h2>
+                <div class="w-20 h-1 bg-coffee-400 mx-auto"></div>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Testimonial 1 -->
+                <div class="testimonial-card rounded-lg p-8 transition-all duration-300 hover:transform hover:scale-105">
+                    <div class="flex items-center mb-4">
+                        <div class="text-yellow-400 mr-2">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                    </div>
+                    <p class="text-gray-700 italic mb-6">"The best cappuccino I've ever had! The atmosphere is cozy and the staff is incredibly friendly. My go-to spot for catching up with friends."</p>
+                    <div class="flex items-center">
+                        <img src="https://randomuser.me/api/portraits/women/43.jpg" alt="Sarah J." class="w-12 h-12 rounded-full mr-4 object-cover">
+                        <div>
+                            <h4 class="font-bold text-coffee-800">Sarah J.</h4>
+                            <p class="text-sm text-gray-600">Regular Customer</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Testimonial 2 -->
+                <div class="testimonial-card rounded-lg p-8 transition-all duration-300 hover:transform hover:scale-105">
+                    <div class="flex items-center mb-4">
+                        <div class="text-yellow-400 mr-2">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                    </div>
+                    <p class="text-gray-700 italic mb-6">"As a coffee connoisseur, I'm impressed by their single-origin selections. The baristas clearly know their craft and the attention to detail is exceptional."</p>
+                    <div class="flex items-center">
+                        <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Michael T." class="w-12 h-12 rounded-full mr-4 object-cover">
+                        <div>
+                            <h4 class="font-bold text-coffee-800">Michael T.</h4>
+                            <p class="text-sm text-gray-600">Coffee Blogger</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Testimonial 3 -->
+                <div class="testimonial-card rounded-lg p-8 transition-all duration-300 hover:transform hover:scale-105">
+                    <div class="flex items-center mb-4">
+                        <div class="text-yellow-400 mr-2">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star-half-alt"></i>
+                        </div>
+                    </div>
+                    <p class="text-gray-700 italic mb-6">"I come here every morning before work. Their cold brew is perfection and the croissants are to die for. Worth every penny!"</p>
+                    <div class="flex items-center">
+                        <img src="https://randomuser.me/api/portraits/women/68.jpg" alt="Jessica L." class="w-12 h-12 rounded-full mr-4 object-cover">
+                        <div>
+                            <h4 class="font-bold text-coffee-800">Jessica L.</h4>
+                            <p class="text-sm text-gray-600">Daily Visitor</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Brewing Process Section -->
+    <section class="py-20 bg-white">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-16">
+                <span class="text-coffee-500 font-semibold">Our Process</span>
+                <h2 class="text-4xl font-bold font-playfair text-coffee-800 mt-2 mb-4">From Bean to Cup</h2>
+                <p class="text-gray-600 max-w-2xl mx-auto">Every cup tells a story of careful selection, precise roasting, and artful preparation.</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <!-- Step 1 -->
+                <div class="text-center px-4">
+                    <div class="bg-coffee-100 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6 relative">
+                        <span class="text-coffee-600 text-2xl font-bold absolute -top-3 -left-3 bg-white rounded-full w-8 h-8 flex items-center justify-center shadow">1</span>
+                        <i class="fas fa-seedling text-coffee-600 text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold font-playfair text-coffee-800 mb-3">Sourcing</h3>
+                    <p class="text-gray-600">We partner with ethical farms worldwide to source only the finest specialty-grade beans.</p>
+                </div>
+                
+                <!-- Step 2 -->
+                <div class="text-center px-4">
+                    <div class="bg-coffee-100 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6 relative">
+                        <span class="text-coffee-600 text-2xl font-bold absolute -top-3 -left-3 bg-white rounded-full w-8 h-8 flex items-center justify-center shadow">2</span>
+                        <i class="fas fa-fire text-coffee-600 text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold font-playfair text-coffee-800 mb-3">Roasting</h3>
+                    <p class="text-gray-600">Our master roaster carefully develops each bean's unique flavor profile.</p>
+                </div>
+                
+                <!-- Step 3 -->
+                <div class="text-center px-4">
+                    <div class="bg-coffee-100 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6 relative">
+                        <span class="text-coffee-600 text-2xl font-bold absolute -top-3 -left-3 bg-white rounded-full w-8 h-8 flex items-center justify-center shadow">3</span>
+                        <i class="fas fa-blender text-coffee-600 text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold font-playfair text-coffee-800 mb-3">Grinding</h3>
+                    <p class="text-gray-600">Beans are ground fresh for each order to ensure maximum flavor extraction.</p>
+                </div>
+                
+                <!-- Step 4 -->
+                <div class="text-center px-4">
+                    <div class="bg-coffee-100 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6 relative">
+                        <span class="text-coffee-600 text-2xl font-bold absolute -top-3 -left-3 bg-white rounded-full w-8 h-8 flex items-center justify-center shadow">4</span>
+                        <i class="fas fa-mug-hot text-coffee-600 text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold font-playfair text-coffee-800 mb-3">Brewing</h3>
+                    <p class="text-gray-600">Our baristas craft each drink with precision and care, just for you.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Newsletter Section -->
+    <section class="py-16 bg-coffee-600 text-white">
+        <div class="container mx-auto px-4">
+            <div class="max-w-4xl mx-auto bg-coffee-700 rounded-xl p-8 md:p-12 shadow-lg">
+                <div class="flex flex-col md:flex-row items-center">
+                    <div class="md:w-1/2 mb-8 md:mb-0 md:pr-8">
+                        <h3 class="text-2xl font-bold font-playfair mb-2">Join Our Coffee Club</h3>
+                        <p>Subscribe to our newsletter and get 15% off your first order plus exclusive access to new blends and events.</p>
+                    </div>
+                    <div class="md:w-1/2">
+                        <form class="flex flex-col sm:flex-row gap-2">
+                            <input type="email" placeholder="Your email address" class="flex-grow px-4 py-3 rounded-full text-gray-800 focus:outline-none focus:ring-2 focus:ring-coffee-400">
+                            <button type="submit" class="bg-coffee-900 hover:bg-coffee-800 text-white px-6 py-3 rounded-full font-semibold transition duration-300 whitespace-nowrap">
+                                Subscribe <i class="fas fa-paper-plane ml-2"></i>
+                            </button>
+                        </form>
+                        <p class="text-xs text-coffee-200 mt-2">We respect your privacy. Unsubscribe at any time.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-20 bg-coffee-50">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-16">
+                <span class="text-coffee-500 font-semibold">Get In Touch</span>
+                <h2 class="text-4xl font-bold font-playfair text-coffee-800 mt-2 mb-4">Visit Us Today</h2>
+                <div class="w-20 h-1 bg-coffee-600 mx-auto"></div>
+            </div>
+            
+            <div class="flex flex-col lg:flex-row gap-12">
+                <div class="lg:w-1/2">
+                    <div class="bg-white rounded-xl shadow-lg p-8 h-full">
+                        <h3 class="text-2xl font-bold font-playfair text-coffee-800 mb-6">Contact Information</h3>
+                        
+                        <div class="space-y-6">
+                            <div class="flex">
+                                <div class="text-coffee-600 mr-4 mt-1">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold text-coffee-800">Location</h4>
+                                    <p class="text-gray-600">123 Brew Street, Coffeeville, CV 12345</p>
+                                </div>
+                            </div>
+                            
+                            <div class="flex">
+                                <div class="text-coffee-600 mr-4 mt-1">
+                                    <i class="fas fa-clock"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold text-coffee-800">Hours</h4>
+                                    <p class="text-gray-600">Monday - Friday: 7:00 AM - 7:00 PM</p>
+                                    <p class="text-gray-600">Saturday - Sunday: 8:00 AM - 6:00 PM</p>
+                                </div>
+                            </div>
+                            
+                            <div class="flex">
+                                <div class="text-coffee-600 mr-4 mt-1">
+                                    <i class="fas fa-phone-alt"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold text-coffee-800">Phone</h4>
+                                    <p class="text-gray-600">(123) 456-7890</p>
+                                </div>
+                            </div>
+                            
+                            <div class="flex">
+                                <div class="text-coffee-600 mr-4 mt-1">
+                                    <i class="fas fa-envelope"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold text-coffee-800">Email</h4>
+                                    <p class="text-gray-600">hello@brewhaven.com</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="mt-8">
+                            <h4 class="font-semibold text-coffee-800 mb-4">Follow Us</h4>
+                            <div class="flex space-x-4">
+                                <a href="#" class="bg-coffee-100 text-coffee-600 w-10 h-10 rounded-full flex items-center justify-center hover:bg-coffee-600 hover:text-white transition duration-300">
+                                    <i class="fab fa-facebook-f"></i>
+                                </a>
+                                <a href="#" class="bg-coffee-100 text-coffee-600 w-10 h-10 rounded-full flex items-center justify-center hover:bg-coffee-600 hover:text-white transition duration-300">
+                                    <i class="fab fa-instagram"></i>
+                                </a>
+                                <a href="#" class="bg-coffee-100 text-coffee-600 w-10 h-10 rounded-full flex items-center justify-center hover:bg-coffee-600 hover:text-white transition duration-300">
+                                    <i class="fab fa-twitter"></i>
+                                </a>
+                                <a href="#" class="bg-coffee-100 text-coffee-600 w-10 h-10 rounded-full flex items-center justify-center hover:bg-coffee-600 hover:text-white transition duration-300">
+                                    <i class="fab fa-tiktok"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="lg:w-1/2">
+                    <div class="bg-white rounded-xl shadow-lg p-8 h-full">
+                        <h3 class="text-2xl font-bold font-playfair text-coffee-800 mb-6">Send Us a Message</h3>
+                        <form class="space-y-6">
+                            <div>
+                                <label for="name" class="block text-gray-700 text-sm font-bold mb-2">Name</label>
+                                <input type="text" id="name" placeholder="Your Name" class="shadow appearance-none border rounded-lg w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-coffee-400 focus:border-transparent">
+                            </div>
+                            <div>
+                                <label for="email" class="block text-gray-700 text-sm font-bold mb-2">Email</label>
+                                <input type="email" id="email" placeholder="Your Email" class="shadow appearance-none border rounded-lg w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-coffee-400 focus:border-transparent">
+                            </div>
+                            <div>
+                                <label for="subject" class="block text-gray-700 text-sm font-bold mb-2">Subject</label>
+                                <input type="text" id="subject" placeholder="Subject" class="shadow appearance-none border rounded-lg w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-coffee-400 focus:border-transparent">
+                            </div>
+                            <div>
+                                <label for="message" class="block text-gray-700 text-sm font-bold mb-2">Message</label>
+                                <textarea id="message" rows="5" placeholder="Your Message" class="shadow appearance-none border rounded-lg w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-coffee-400 focus:border-transparent"></textarea>
+                            </div>
+                            <button type="submit" class="bg-coffee-600 text-white px-8 py-3 rounded-full font-semibold hover:bg-coffee-700 transition duration-300 w-full">
+                                Send Message <i class="fas fa-paper-plane ml-2"></i>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mt-12 rounded-xl overflow-hidden shadow-lg">
+                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3022.215209105331!2d-73.98784492416495!3d40.75798597138968!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c25855c6480299%3A0x55194ec5a1ae072e!2sTimes%20Square!5e0!3m2!1sen!2sus!4v1689874326788!5m2!1sen!2sus" width="100%" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-coffee-900 text-white py-12">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+                <div>
+                    <h4 class="text-xl font-bold font-playfair mb-4 flex items-center">
+                        <i class="fas fa-mug-hot text-coffee-400 mr-2"></i>
+                        Brew Haven
+                    </h4>
+                    <p class="text-coffee-300">Artisan coffee crafted with passion and precision since 2010.</p>
+                    <div class="flex space-x-4 mt-4">
+                        <a href="#" class="text-coffee-300 hover:text-white transition duration-300"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="text-coffee-300 hover:text-white transition duration-300"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="text-coffee-300 hover:text-white transition duration-300"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="text-coffee-300 hover:text-white transition duration-300"><i class="fab fa-tiktok"></i></a>
+                    </div>
+                </div>
+                
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Quick Links</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#home" class="text-coffee-300 hover:text-white transition duration-300">Home</a></li>
+                        <li><a href="#menu" class="text-coffee-300 hover:text-white transition duration-300">Menu</a></li>
+                        <li><a href="#about" class="text-coffee-300 hover:text-white transition duration-300">Our Story</a></li>
+                        <li><a href="#testimonials" class="text-coffee-300 hover:text-white transition duration-300">Testimonials</a></li>
+                        <li><a href="#contact" class="text-coffee-300 hover:text-white transition duration-300">Contact</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Contact Info</h4>
+                    <ul class="space-y-2 text-coffee-300">
+                        <li class="flex items-start">
+                            <i class="fas fa-map-marker-alt mt-1 mr-2 text-coffee-400"></i>
+                            <span>123 Brew Street, Coffeeville, CV 12345</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-phone-alt mr-2 text-coffee-400"></i>
+                            <span>(123) 456-7890</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-envelope mr-2 text-coffee-400"></i>
+                            <span>hello@brewhaven.com</span>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Newsletter</h4>
+                    <p class="text-coffee-300 mb-4">Subscribe to our newsletter for the latest updates and offers.</p>
+                    <form class="flex">
+                        <input type="email" placeholder="Your email" class="px-4 py-2 rounded-l-lg text-gray-800 w-full focus:outline-none">
+                        <button type="submit" class="bg-coffee-600 hover:bg-coffee-700 text-white px-4 py-2 rounded-r-lg transition duration-300">
+                            <i class="fas fa-paper-plane"></i>
+                        </button>
                     </form>
                 </div>
             </div>
-        </section>
-    </main>
-
-    <footer class="bg-gray-800 text-white py-8">
-        <div class="container mx-auto px-4 text-center">
-            <p>&copy; 2024 Coffee Shop. All rights reserved.</p>
+            
+            <div class="border-t border-coffee-800 pt-8 text-center text-coffee-400">
+                <p>&copy; 2023 Brew Haven. All rights reserved. | Designed with <i class="fas fa-heart text-red-400"></i> by Coffee Lovers</p>
+            </div>
         </div>
     </footer>
 
+    <!-- Back to Top Button -->
+    <button id="back-to-top" class="fixed bottom-8 right-8 bg-coffee-600 text-white w-12 h-12 rounded-full shadow-lg flex items-center justify-center hover:bg-coffee-700 transition duration-300 opacity-0 invisible">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <!-- Shopping Cart Sidebar -->
+    <div id="cart-sidebar" class="fixed top-0 right-0 w-full sm:w-96 h-full bg-white shadow-xl z-50 transform translate-x-full transition-transform duration-300 overflow-y-auto">
+        <div class="p-6">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="text-xl font-bold font-playfair text-coffee-800">Your Order</h3>
+                <button id="close-cart-btn" class="text-gray-700 focus:outline-none">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
+            
+            <div id="cart-items" class="space-y-4 mb-6">
+                <!-- Cart items will be added here dynamically -->
+                <div class="text-center py-8 text-gray-500" id="empty-cart-message">
+                    <i class="fas fa-coffee text-4xl mb-4 text-coffee-200"></i>
+                    <p>Your cart is empty</p>
+                    <p class="text-sm mt-2">Add some delicious coffee to get started!</p>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-200 pt-4 mb-6">
+                <div class="flex justify-between mb-2">
+                    <span class="text-gray-600">Subtotal</span>
+                    <span class="font-semibold" id="cart-subtotal">$0.00</span>
+                </div>
+                <div class="flex justify-between mb-2">
+                    <span class="text-gray-600">Tax</span>
+                    <span class="font-semibold" id="cart-tax">$0.00</span>
+                </div>
+                <div class="flex justify-between text-lg font-bold">
+                    <span>Total</span>
+                    <span id="cart-total">$0.00</span>
+                </div>
+            </div>
+            
+            <button id="checkout-btn" class="w-full bg-coffee-600 text-white py-3 rounded-lg font-semibold hover:bg-coffee-700 transition duration-300 disabled:opacity-50 disabled:cursor-not-allowed" disabled>
+                Proceed to Checkout <i class="fas fa-arrow-right ml-2"></i>
+            </button>
+            
+            <div class="text-center mt-4">
+                <a href="#menu" class="text-coffee-600 hover:text-coffee-800 text-sm font-medium" id="continue-shopping-btn">
+                    <i class="fas fa-chevron-left mr-1"></i> Continue Shopping
+                </a>
+            </div>
+        </div>
+    </div>
+
     <script>
-        // Function to create falling coffee beans
-        function createFallingBeans() {
-            const beanContainer = document.getElementById('bean-container');
-            const numberOfBeans = 50; // Adjust as needed
-
-            for (let i = 0; i < numberOfBeans; i++) {
-                const bean = document.createElement('div');
-                bean.classList.add('bean');
-                bean.style.left = `${Math.random() * 100}vw`; /* Random horizontal position */
-                bean.style.animationDuration = `${Math.random() * 2 + 5}s`; /* Random animation duration */
-                bean.style.opacity = Math.random(); /* Random opacity */
-                bean.style.transform = `scale(${Math.random() * 0.5 + 0.5})`; /* Random scale */
-                beanContainer.appendChild(bean);
-            }
-        }
-
-        // Mobile menu toggle functionality
+        // Mobile menu toggle
         const hamburgerBtn = document.getElementById('hamburger-btn');
         const mobileMenu = document.getElementById('mobile-menu');
         const closeMenuBtn = document.getElementById('close-menu-btn');
-        const mobileMenuLinks = mobileMenu.querySelectorAll('a');
-        const navLinks = document.querySelectorAll('header nav a');
-        const sections = document.querySelectorAll('section');
-
-        function toggleMobileMenu() {
-            mobileMenu.classList.toggle('hidden');
-        }
-
-        hamburgerBtn.addEventListener('click', toggleMobileMenu);
-        closeMenuBtn.addEventListener('click', toggleMobileMenu);
-        mobileMenuLinks.forEach(link => {
-            link.addEventListener('click', toggleMobileMenu);
+        
+        hamburgerBtn.addEventListener('click', () => {
+            mobileMenu.classList.remove('hidden');
         });
-
-        // Add this event listener to handle clicks outside the menu
-        document.addEventListener('click', (event) => {
-            if (!mobileMenu.classList.contains('hidden') && !mobileMenu.contains(event.target) && event.target !== hamburgerBtn) {
-                toggleMobileMenu();
+        
+        closeMenuBtn.addEventListener('click', () => {
+            mobileMenu.classList.add('hidden');
+        });
+        
+        // Close mobile menu when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!mobileMenu.contains(e.target) && e.target !== hamburgerBtn) {
+                mobileMenu.classList.add('hidden');
             }
         });
-
+        
         // Smooth scrolling for all links
-        function smoothScroll(targetId) {
-            const targetElement = document.getElementById(targetId);
-            if (targetElement) {
-                window.scrollTo({
-                    top: targetElement.offsetTop - document.querySelector('header').offsetHeight,
-                    behavior: 'smooth'
-                });
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                if (targetId === '#') return;
+                
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    const headerHeight = document.querySelector('header').offsetHeight;
+                    const targetPosition = targetElement.offsetTop - headerHeight;
+                    
+                    window.scrollTo({
+                        top: targetPosition,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+        
+        // Back to top button
+        const backToTopBtn = document.getElementById('back-to-top');
+        
+        window.addEventListener('scroll', () => {
+            if (window.pageYOffset > 300) {
+                backToTopBtn.classList.remove('opacity-0', 'invisible');
+                backToTopBtn.classList.add('opacity-100', 'visible');
+            } else {
+                backToTopBtn.classList.remove('opacity-100', 'visible');
+                backToTopBtn.classList.add('opacity-0', 'invisible');
             }
-        }
-
-        navLinks.forEach(link => {
-            link.addEventListener('click', (e) => {
-                e.preventDefault();
-                const targetId = link.getAttribute('href').slice(1); // Remove the '#'
-                smoothScroll(targetId);
+        });
+        
+        backToTopBtn.addEventListener('click', () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
             });
         });
-
-        mobileMenuLinks.forEach(link => {
-            link.addEventListener('click', (e) => {
-                e.preventDefault();
-                const targetId = link.getAttribute('href').slice(1); // Remove the '#'
-                smoothScroll(targetId);
-                toggleMobileMenu(); // Close menu after clicking a link
-            });
-        });
-
-        // Highlight active section in nav
-        function updateActiveNavLink() {
+        
+        // Active nav link highlighting
+        const sections = document.querySelectorAll('section');
+        const navLinks = document.querySelectorAll('.nav-link');
+        
+        function highlightNavLink() {
             let currentSectionId = '';
+            
             sections.forEach(section => {
                 const sectionTop = section.offsetTop;
                 const sectionHeight = section.clientHeight;
-                if (window.scrollY >= sectionTop - document.querySelector('header').offsetHeight - 50 &&
-                    window.scrollY < sectionTop + sectionHeight - document.querySelector('header').offsetHeight - 50) {
+                const headerHeight = document.querySelector('header').offsetHeight;
+                
+                if (window.scrollY >= sectionTop - headerHeight - 50 && 
+                    window.scrollY < sectionTop + sectionHeight - headerHeight - 50) {
                     currentSectionId = section.getAttribute('id');
                 }
             });
-
+            
             navLinks.forEach(link => {
-                link.classList.remove('active');
+                link.classList.remove('active-nav');
                 if (link.getAttribute('href').slice(1) === currentSectionId) {
-                    link.classList.add('active');
+                    link.classList.add('active-nav');
                 }
             });
         }
-
-        window.addEventListener('scroll', updateActiveNavLink);
-
-
-        // Initialize falling beans on page load
-        window.onload = function() {
+        
+        window.addEventListener('scroll', highlightNavLink);
+        document.addEventListener('DOMContentLoaded', highlightNavLink);
+        
+        // Menu filtering
+        const filterButtons = document.querySelectorAll('.menu-filter-btn');
+        const menuCards = document.querySelectorAll('.menu-card');
+        
+        filterButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                // Update active button
+                filterButtons.forEach(btn => btn.classList.remove('active', 'bg-coffee-600', 'text-white'));
+                button.classList.add('active', 'bg-coffee-600', 'text-white');
+                
+                const category = button.getAttribute('data-category');
+                
+                // Filter menu items
+                menuCards.forEach(card => {
+                    if (category === 'all' || card.getAttribute('data-category') === category) {
+                        card.style.display = 'block';
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+            });
+        });
+        
+        // Coffee counter animation
+        function animateCounter(element, target, duration = 2000) {
+            const start = 0;
+            const increment = target / (duration / 16);
+            let current = start;
+            
+            const timer = setInterval(() => {
+                current += increment;
+                if (current >= target) {
+                    clearInterval(timer);
+                    current = target;
+                }
+                element.textContent = Math.floor(current);
+            }, 16);
+        }
+        
+        // Animate coffee counter when it comes into view
+        const coffeeCounter = document.getElementById('coffee-counter');
+        const observer = new IntersectionObserver((entries) => {
+            if (entries[0].isIntersecting) {
+                animateCounter(coffeeCounter, 350);
+                observer.unobserve(coffeeCounter);
+            }
+        }, { threshold: 0.5 });
+        
+        observer.observe(coffeeCounter);
+        
+        // Coffee beans animation
+        function createFallingBeans() {
+            const beanContainer = document.getElementById('bean-container');
+            const numberOfBeans = 30;
+            
+            for (let i = 0; i < numberOfBeans; i++) {
+                const bean = document.createElement('div');
+                bean.classList.add('bean');
+                
+                // Random properties
+                const size = Math.random() * 6 + 6;
+                const left = Math.random() * 100;
+                const delay = Math.random() * 5;
+                const duration = Math.random() * 10 + 10;
+                const rotation = Math.random() * 360;
+                
+                bean.style.width = `${size}px`;
+                bean.style.height = `${size * 0.7}px`;
+                bean.style.left = `${left}vw`;
+                bean.style.animationDelay = `${delay}s`;
+                bean.style.animationDuration = `${duration}s`;
+                bean.style.setProperty('--rotation', `${rotation}deg`);
+                bean.style.opacity = Math.random() * 0.5 + 0.3;
+                
+                beanContainer.appendChild(bean);
+            }
+        }
+        
+        // Shopping cart functionality
+        const cartBtn = document.getElementById('cart-btn');
+        const cartSidebar = document.getElementById('cart-sidebar');
+        const closeCartBtn = document.getElementById('close-cart-btn');
+        const cartItemsContainer = document.getElementById('cart-items');
+        const emptyCartMessage = document.getElementById('empty-cart-message');
+        const cartSubtotal = document.getElementById('cart-subtotal');
+        const cartTax = document.getElementById('cart-tax');
+        const cartTotal = document.getElementById('cart-total');
+        const checkoutBtn = document.getElementById('checkout-btn');
+        const cartCount = document.getElementById('cart-count');
+        const continueShoppingBtn = document.getElementById('continue-shopping-btn');
+        
+        let cart = [];
+        
+        // Toggle cart sidebar
+        cartBtn.addEventListener('click', () => {
+            cartSidebar.classList.remove('translate-x-full');
+        });
+        
+        closeCartBtn.addEventListener('click', () => {
+            cartSidebar.classList.add('translate-x-full');
+        });
+        
+        continueShoppingBtn.addEventListener('click', () => {
+            cartSidebar.classList.add('translate-x-full');
+        });
+        
+        // Add to cart functionality
+        document.querySelectorAll('.add-to-cart-btn').forEach(button => {
+            button.addEventListener('click', (e) => {
+                const menuCard = e.target.closest('.menu-card');
+                const itemName = menuCard.querySelector('h3').textContent;
+                const itemPrice = parseFloat(menuCard.querySelector('span').textContent.replace('$', ''));
+                const itemImage = menuCard.querySelector('img').src;
+                
+                // Check if item already in cart
+                const existingItem = cart.find(item => item.name === itemName);
+                
+                if (existingItem) {
+                    existingItem.quantity += 1;
+                } else {
+                    cart.push({
+                        name: itemName,
+                        price: itemPrice,
+                        image: itemImage,
+                        quantity: 1
+                    });
+                }
+                
+                updateCart();
+                cartSidebar.classList.remove('translate-x-full');
+                
+                // Show added to cart animation
+                const addedMsg = document.createElement('div');
+                addedMsg.className = 'fixed top-20 right-4 bg-green-500 text-white px-4 py-2 rounded-lg shadow-lg z-50 animate-fadeIn';
+                addedMsg.textContent = 'Added to cart!';
+                document.body.appendChild(addedMsg);
+                
+                setTimeout(() => {
+                    addedMsg.classList.add('opacity-0', 'transition-opacity', 'duration-300');
+                    setTimeout(() => addedMsg.remove(), 300);
+                }, 2000);
+            });
+        });
+        
+        // Update cart display
+        function updateCart() {
+            // Clear current items
+            cartItemsContainer.innerHTML = '';
+            
+            if (cart.length === 0) {
+                emptyCartMessage.classList.remove('hidden');
+                checkoutBtn.disabled = true;
+            } else {
+                emptyCartMessage.classList.add('hidden');
+                checkoutBtn.disabled = false;
+                
+                // Add each item to cart display
+                cart.forEach((item, index) => {
+                    const cartItem = document.createElement('div');
+                    cartItem.className = 'flex items-center py-4 border-b border-gray-200';
+                    cartItem.innerHTML = `
+                        <img src="${item.image}" alt="${item.name}" class="w-16 h-16 object-cover rounded-lg mr-4">
+                        <div class="flex-grow">
+                            <h4 class="font-semibold text-coffee-800">${item.name}</h4>
+                            <p class="text-coffee-600">$${item.price.toFixed(2)}</p>
+                        </div>
+                        <div class="flex items-center">
+                            <button class="quantity-btn decrease text-gray-500 hover:text-coffee-600 w-8 h-8 rounded-full flex items-center justify-center" data-index="${index}">
+                                <i class="fas fa-minus text-xs"></i>
+                            </button>
+                            <span class="mx-2">${item.quantity}</span>
+                            <button class="quantity-btn increase text-gray-500 hover:text-coffee-600 w-8 h-8 rounded-full flex items-center justify-center" data-index="${index}">
+                                <i class="fas fa-plus text-xs"></i>
+                            </button>
+                        </div>
+                        <button class="remove-btn ml-4 text-red-500 hover:text-red-700" data-index="${index}">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    `;
+                    cartItemsContainer.appendChild(cartItem);
+                });
+            }
+            
+            // Update totals
+            const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            const tax = subtotal * 0.08; // 8% tax
+            const total = subtotal + tax;
+            
+            cartSubtotal.textContent = `$${subtotal.toFixed(2)}`;
+            cartTax.textContent = `$${tax.toFixed(2)}`;
+            cartTotal.textContent = `$${total.toFixed(2)}`;
+            
+            // Update cart count
+            const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+            if (totalItems > 0) {
+                cartCount.textContent = totalItems;
+                cartCount.classList.remove('hidden');
+            } else {
+                cartCount.classList.add('hidden');
+            }
+        }
+        
+        // Handle quantity changes and item removal
+        cartItemsContainer.addEventListener('click', (e) => {
+            if (e.target.classList.contains('decrease') || e.target.closest('.decrease')) {
+                const index = e.target.closest('.decrease').getAttribute('data-index');
+                if (cart[index].quantity > 1) {
+                    cart[index].quantity -= 1;
+                } else {
+                    cart.splice(index, 1);
+                }
+                updateCart();
+            } else if (e.target.classList.contains('increase') || e.target.closest('.increase')) {
+                const index = e.target.closest('.increase').getAttribute('data-index');
+                cart[index].quantity += 1;
+                updateCart();
+            } else if (e.target.classList.contains('remove-btn') || e.target.closest('.remove-btn')) {
+                const index = e.target.closest('.remove-btn').getAttribute('data-index');
+                cart.splice(index, 1);
+                updateCart();
+            }
+        });
+        
+        // Checkout button
+        checkoutBtn.addEventListener('click', () => {
+            alert('Thank you for your order! This is a demo site, so no actual purchase was made.');
+            cart = [];
+            updateCart();
+            cartSidebar.classList.add('translate-x-full');
+        });
+        
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
             createFallingBeans();
-        };
+            updateCart();
+        });
     </script>
 </body>
 </html>
